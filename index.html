@@ -209,7 +209,6 @@
                         <option value="new">Сначала новые</option>
                         <option value="asc">Сначала дешевые</option>
                         <option value="desc">Сначала дорогие</option>
-                        <option value="avito">С Авитодоставкой</option>
                     </select>
                 </div>
                 <button class="pill active" onclick="setCategory('all', this)">Все</button>
@@ -338,8 +337,6 @@
                 filtered.sort((a,b) => parseInt(b.price.replace(/\D/g,'')) - parseInt(a.price.replace(/\D/g,'')));
             } else if (currentSort === 'new') {
                 filtered.sort((a,b) => parseInt(b.id) - parseInt(a.id));
-            } else if (currentSort === 'avito') {
-                filtered = filtered.filter(p => p.description && p.description.toLowerCase().includes('авито'));
             }
 
             if(!filtered.length) {
