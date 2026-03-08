@@ -160,6 +160,14 @@
             padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
             z-index: 101;
         }
+
+        .price-usdt {
+            font-size: 12px;       /* чуть меньше, чем рубли */
+            color: #d1d1d6;        /* такой же, как .name */
+            display: inline;        /* чтобы оставалось в одной строке */
+            margin-left: 4px;       /* небольшой отступ после ₽ */
+        }
+        
         .btn-main { display: flex; width: 100%; background: var(--link); color: white; height: 50px; border-radius: 14px; align-items: center; justify-content: center; font-weight: 600; text-decoration: none; font-size: 16px; }
 
         /* --- LIGHTBOX --- */
@@ -374,7 +382,7 @@
                     ${dotsHtml}
                     
                     <div class="card-info" onclick="openProduct('${p.id}')">
-                        <div class="price">${p.price} ₽</div>
+                        <div class="price">${p.price} ₽ /<span class="price-usdt">${p.price2} USDT</span></div>
                         <div class="name">${p.name}</div>
                     </div>
                 `;
@@ -408,7 +416,7 @@
             modalIndex = 0;
             
             document.getElementById('m-name').innerText = p.name;
-            document.getElementById('m-price').innerText = p.price + ' ₽';
+            document.getElementById('m-price').innerHTML = `${p.price} ₽<span class="price-usdt">${p.price2} USDT</span>`;
             document.getElementById('m-desc').innerText = p.description || '';
             
             const firstImg = p.images ? p.images.split(',')[0].trim() : '';
@@ -558,7 +566,7 @@
                     </svg>
                     <div class="dots-row"></div>
                     <div class="card-info" onclick="openProduct('${p.id}')">
-                        <div class="price">${p.price} ₽</div>
+                        <div class="price">${p.price} ₽ /<span class="price-usdt">${p.price2} USDT</span></div>
                         <div class="name">${p.name}</div>
                     </div>
                 `;
