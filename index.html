@@ -116,6 +116,14 @@
         .sort-dropdown button:hover {
             background: rgba(255,255,255,0.1);
         }
+        
+        .sort-wrapper.active {
+            background: var(--text);
+            color: var(--bg);
+        }
+        .sort-wrapper.active .sort-icon {
+            color: var(--bg);
+        }
 
         /* --- СЕТКА --- */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 10px; padding: 15px 10px; align-items: start; position: relative; z-index: 2; }
@@ -483,8 +491,20 @@
         sortByPill.appendChild(sortDropdown);
         
         // КЛИК НА ИКОНКУ ⇅ (или твою sort-wrapper)
-        document.querySelector('.sort-wrapper').onclick = () => {
+        const sortWrapper = document.querySelector('.sort-wrapper');
+
+        sortWrapper.onclick = () => {
+            const isHidden = secondaryFilters.classList.contains('hidden');
+            
+            // Показываем/скрываем фильтры
             secondaryFilters.classList.toggle('hidden');
+        
+            // Подсветка кнопки
+            if(isHidden) {
+                sortWrapper.classList.add('active');
+            } else {
+                sortWrapper.classList.remove('active');
+            }
         };
         
         // КЛИК НА "СОРТИРОВАТЬ ПО" — показать/скрыть выпадающий список
