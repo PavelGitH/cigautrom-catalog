@@ -387,9 +387,11 @@
                 // обычные категории
                 filtered = filtered.filter(p => p.category === currentCategory);
             }
-            if (currentSize) {
-                filtered = filtered.filter(p => 
-                    p.description && p.description.toUpperCase().includes(currentSize)
+           if (currentSize) {
+                const sizeRegex = new RegExp(`\\b${currentSize}\\b`, 'i');
+            
+                filtered = filtered.filter(p =>
+                    p.description && sizeRegex.test(p.description)
                 );
             }
 
