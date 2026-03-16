@@ -87,35 +87,6 @@
         .sort-wrapper { position: relative; width: 44px; height: 36px; background: var(--card-bg); border-radius: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-right: -2px; }
         .sort-icon { font-size: 18px; color: var(--text); pointer-events: none; font-weight: 300; }
         .sort-select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 10; cursor: pointer; }
-
-        /* Выпадающий список для сортировки */
-        .sort-dropdown {
-            position: absolute;
-            top: 100%; left: 0;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            display: none;
-            flex-direction: column;
-            min-width: 140px;
-            z-index: 50;
-        }
-        
-        .sort-dropdown button {
-            background: none;
-            border: none;
-            color: var(--text);
-            padding: 10px 14px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: 0.1s;
-        }
-        
-        .sort-dropdown button:hover {
-            background: rgba(255,255,255,0.1);
-        }
         
         .sort-wrapper.active {
             background: var(--text);
@@ -261,7 +232,25 @@
             </div>
             <!-- РЯД ФИЛЬТРОВ ПО СОРТИРОВКЕ И РАЗМЕРАМ (СКРЫТ ПО УМОЛЧАНИЮ) -->
             <div class="filters-row hidden" id="secondary-filters" style="margin-top: 8px;">
-                <button class="pill" id="sort-by-pill">Сортировать по ▾</button>
+                <div class="pill" style="position:relative;">
+                    Сортировать по ▾
+                    
+                    <select onchange="applySort(this.value)" 
+                        style="
+                        position:absolute;
+                        top:0;
+                        left:0;
+                        width:100%;
+                        height:100%;
+                        opacity:0;
+                        cursor:pointer;">
+                        
+                        <option value="new">Сначала новые</option>
+                        <option value="asc">Сначала дешевые</option>
+                        <option value="desc">Сначала дорогие</option>
+                        
+                    </select>
+                </div>
                 <button class="pill">Размер одежды</button>
                 <button class="pill">Размер обуви</button>
             </div>
@@ -479,17 +468,6 @@
         const secondaryFilters = document.getElementById('secondary-filters');
         const sortByPill = document.getElementById('sort-by-pill');
         
-        // СОЗДАЕМ ВЫПАДАЮЩИЙ СПИСОК ДЛЯ "СОРТИРОВАТЬ ПО"
-        const sortDropdown = document.createElement('div');
-        sortDropdown.className = 'sort-dropdown';
-        sortDropdown.innerHTML = `
-            <button onclick="applySort('new')">Сначала новые</button>
-            <button onclick="applySort('asc')">Сначала дешевые</button>
-            <button onclick="applySort('desc')">Сначала дорогие</button>
-        `;
-        sortByPill.style.position = 'relative';
-        sortByPill.appendChild(sortDropdown);
-        
         // КЛИК НА ИКОНКУ ⇅ (или твою sort-wrapper)
         const sortWrapper = document.querySelector('.sort-wrapper');
 
@@ -507,17 +485,6 @@
             }
         };
         
-        // КЛИК НА "СОРТИРОВАТЬ ПО" — показать/скрыть выпадающий список
-        sortByPill.onclick = (e) => {
-            e.stopPropagation(); // чтобы не срабатывал родитель
-            sortDropdown.style.display = sortDropdown.style.display === 'flex' ? 'none' : 'flex';
-        };
-        
-        // Закрытие dropdown при клике вне
-        document.addEventListener('click', () => {
-            sortDropdown.style.display = 'none';
-        });
-
         function renderModalGallery() {
             const track = document.getElementById('gallery-track');
             const dotsContainer = document.getElementById('modal-dots');
