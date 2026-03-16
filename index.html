@@ -117,13 +117,6 @@
             background: rgba(255,255,255,0.1);
         }
 
-        .sort-wrapper.active {
-            background: var(--text);
-        }
-        .sort-wrapper.active .sort-icon {
-            color: var(--bg);
-        }
-
         /* --- СЕТКА --- */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 10px; padding: 15px 10px; align-items: start; position: relative; z-index: 2; }
         .card { display: flex; flex-direction: column; position: relative; width: 100%; }
@@ -504,17 +497,7 @@
         document.addEventListener('click', () => {
             sortDropdown.style.display = 'none';
         });
-        
-        // Клик на иконку ⇅
-        const sortWrapper = document.querySelector('.sort-wrapper');
-        const secondaryFilters = document.getElementById('secondary-filters');
-        
-        sortWrapper.onclick = () => {
-            const isHidden = secondaryFilters.classList.toggle('hidden'); // показываем/скрываем нижний ряд
-            // Подсветка кнопки, как категории
-            sortWrapper.classList.toggle('active', !isHidden);
-        };
-        
+
         function renderModalGallery() {
             const track = document.getElementById('gallery-track');
             const dotsContainer = document.getElementById('modal-dots');
