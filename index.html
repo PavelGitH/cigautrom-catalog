@@ -401,34 +401,32 @@
             list.innerHTML = '';
             
             let filtered = [...products];
-
+        
             if (currentCategory === 'all') {
-                // показываем всё, КРОМЕ под заказ
                 filtered = filtered.filter(p => p.category !== 'order');
-            
             } else if (currentCategory === 'order') {
-                // показываем ТОЛЬКО под заказ
                 filtered = filtered.filter(p => p.category === 'order');
-            
             } else {
-                // обычные категории
                 filtered = filtered.filter(p => p.category === currentCategory);
             }
-           if (currentSize) {
+        
+            // --- Применяем фильтр одежды ТОЛЬКО в категориях одежды ---
+            if (currentSize && ['all', 'tshirts', 'jackets'].includes(currentCategory)) {
                 const sizeRegex = new RegExp(`\\b${currentSize}\\b`, 'i');
-            
                 filtered = filtered.filter(p =>
                     p.description && sizeRegex.test(p.description)
                 );
             }
-            if (currentShoeSize) {
+        
+            // --- Применяем фильтр обуви ТОЛЬКО в категориях обуви ---
+            if (currentShoeSize && ['all', 'shoes'].includes(currentCategory)) {
                 const shoeRegex = new RegExp(`${currentShoeSize}\\s*EU`, 'i');
-            
                 filtered = filtered.filter(p =>
                     p.description && shoeRegex.test(p.description)
                 );
             }
-
+        
+            // --- Сортировка ---
             if (currentSort === 'asc') {
                 filtered.sort((a,b) => parseInt(a.price.replace(/\D/g,'')) - parseInt(b.price.replace(/\D/g,'')));
             } else if (currentSort === 'desc') {
@@ -436,12 +434,13 @@
             } else if (currentSort === 'new') {
                 filtered.sort((a,b) => parseInt(b.id) - parseInt(a.id));
             }
-
+        
             if(!filtered.length) {
                 list.innerHTML = '<div style="color:var(--hint); text-align:center; padding:20px; grid-column:span 2">Нет товаров</div>';
                 return;
             }
-
+        
+            // --- Рендер карточек как раньше ---
             filtered.forEach((p, index) => {
                 const images = p.images ? p.images.split(',').map(s=>s.trim()) : [];
                 const isFav = localStorage.getItem(`fav_${p.id}`);
@@ -451,14 +450,14 @@
                         <img src="${img}" loading="lazy">
                     </div>
                 `).join('');
-
+        
                 let dotsHtml = '';
                 if(images.length > 1) {
                     dotsHtml = `<div class="dots-row">
                         ${images.slice(0,5).map((_,i) => `<div class="c-dot ${i===0?'active':''}"></div>`).join('')}
                     </div>`;
                 } else { dotsHtml = `<div class="dots-row"></div>`; }
-
+        
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -468,7 +467,7 @@
                     <svg class="fav-icon-svg ${isFav?'liked':''}" viewBox="0 0 24 24" onclick="toggleFavFromCard(this, '${p.id}')">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
-
+        
                     ${dotsHtml}
                     
                     <div class="card-info" onclick="openProduct('${p.id}')">
