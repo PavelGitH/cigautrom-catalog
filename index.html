@@ -410,20 +410,45 @@
                 filtered = filtered.filter(p => p.category === currentCategory);
             }
         
-            // --- Применяем фильтр одежды ТОЛЬКО в категориях одежды ---
-            if (currentSize && ['all', 'tshirts', 'jackets'].includes(currentCategory)) {
-                const sizeRegex = new RegExp(`\\b${currentSize}\\b`, 'i');
-                filtered = filtered.filter(p =>
-                    p.description && sizeRegex.test(p.description)
-                );
-            }
-        
-            // --- Применяем фильтр обуви ТОЛЬКО в категориях обуви ---
-            if (currentShoeSize && ['all', 'shoes'].includes(currentCategory)) {
-                const shoeRegex = new RegExp(`${currentShoeSize}\\s*EU`, 'i');
-                filtered = filtered.filter(p =>
-                    p.description && shoeRegex.test(p.description)
-                );
+            // --- ОСОБАЯ логика для категории "all" ---
+            if (currentCategory === 'all') {
+            
+                if (currentSize || currentShoeSize) {
+            
+                    filtered = filtered.filter(p => {
+            
+                        const desc = p.description || '';
+            
+                        const matchClothes = currentSize
+                            ? new RegExp(`\\b${currentSize}\\b`, 'i').test(desc)
+                            : false;
+            
+                        const matchShoes = currentShoeSize
+                            ? new RegExp(`${currentShoeSize}\\s*EU`, 'i').test(desc)
+                            : false;
+            
+                        return matchClothes || matchShoes;
+                    });
+            
+                }
+            
+            } else {
+            
+                // --- обычные категории ---
+                if (currentSize && ['tshirts', 'jackets'].includes(currentCategory)) {
+                    const sizeRegex = new RegExp(`\\b${currentSize}\\b`, 'i');
+                    filtered = filtered.filter(p =>
+                        p.description && sizeRegex.test(p.description)
+                    );
+                }
+            
+                if (currentShoeSize && currentCategory === 'shoes') {
+                    const shoeRegex = new RegExp(`${currentShoeSize}\\s*EU`, 'i');
+                    filtered = filtered.filter(p =>
+                        p.description && shoeRegex.test(p.description)
+                    );
+                }
+            
             }
         
             // --- Сортировка ---
