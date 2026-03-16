@@ -486,7 +486,6 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === index));
         }
 
-
         window.setCategory = function(c, b) { 
             // Снимаем активность со всех кнопок
             document.querySelectorAll('.pill').forEach(el => el.classList.remove('active')); 
@@ -508,12 +507,18 @@
                 sizeClothesPill.style.display = 'flex';
             } else {
                 sizeClothesPill.style.display = 'none';
+                // Сбрасываем фильтр одежды, если кнопка скрыта
+                currentSize = '';
+                sizeClothesPill.querySelector('select').value = '';
             }
         
             if(['all', 'shoes'].includes(currentCategory)) {
                 sizeShoesPill.style.display = 'flex';
             } else {
                 sizeShoesPill.style.display = 'none';
+                // Сбрасываем фильтр обуви, если кнопка скрыта
+                currentShoeSize = '';
+                sizeShoesPill.querySelector('select').value = '';
             }
         
             renderCatalog(); 
