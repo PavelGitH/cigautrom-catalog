@@ -88,6 +88,35 @@
         .sort-icon { font-size: 18px; color: var(--text); pointer-events: none; font-weight: 300; }
         .sort-select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 10; cursor: pointer; }
 
+        /* Выпадающий список для сортировки */
+        .sort-dropdown {
+            position: absolute;
+            top: 100%; left: 0;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            min-width: 140px;
+            z-index: 50;
+        }
+        
+        .sort-dropdown button {
+            background: none;
+            border: none;
+            color: var(--text);
+            padding: 10px 14px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.1s;
+        }
+        
+        .sort-dropdown button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
         /* --- СЕТКА --- */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 10px; padding: 15px 10px; align-items: start; position: relative; z-index: 2; }
         .card { display: flex; flex-direction: column; position: relative; width: 100%; }
@@ -227,11 +256,11 @@
                 <button class="pill" onclick="setCategory('accessories', this)">Аксессуары</button>
                 <button class="pill" onclick="setCategory('order', this)">Под заказ</button>
             </div>
-            <!-- РЯД ФИЛЬТРОВ ПО СОРТИРОВКЕ И РАЗМЕРАМ -->
-            <div class="filters-row" style="margin-top: 8px;">
-                <button class="pill" id="sort-by-btn">Сортировать по</button>
-                <button class="pill" id="size-clothes-btn">Размер одежды</button>
-                <button class="pill" id="size-shoes-btn">Размер обуви</button>
+            <!-- РЯД ФИЛЬТРОВ ПО СОРТИРОВКЕ И РАЗМЕРАМ (СКРЫТ ПО УМОЛЧАНИЮ) -->
+            <div class="filters-row hidden" id="secondary-filters" style="margin-top: 8px;">
+                <button class="pill" id="sort-by-pill">Сортировать по ▾</button>
+                <button class="pill">Размер одежды</button>
+                <button class="pill">Размер обуви</button>
             </div>
         </div>
 
@@ -442,6 +471,37 @@
             document.getElementById('product-modal').classList.remove('open');
             tg.BackButton.hide();
         }
+
+        // Ссылки на элементы
+        const secondaryFilters = document.getElementById('secondary-filters');
+        const sortByPill = document.getElementById('sort-by-pill');
+        
+        // СОЗДАЕМ ВЫПАДАЮЩИЙ СПИСОК ДЛЯ "СОРТИРОВАТЬ ПО"
+        const sortDropdown = document.createElement('div');
+        sortDropdown.className = 'sort-dropdown';
+        sortDropdown.innerHTML = `
+            <button onclick="applySort('new')">Сначала новые</button>
+            <button onclick="applySort('asc')">Сначала дешевые</button>
+            <button onclick="applySort('desc')">Сначала дорогие</button>
+        `;
+        sortByPill.style.position = 'relative';
+        sortByPill.appendChild(sortDropdown);
+        
+        // КЛИК НА ИКОНКУ ⇅ (или твою sort-wrapper)
+        document.querySelector('.sort-wrapper').onclick = () => {
+            secondaryFilters.classList.toggle('hidden');
+        };
+        
+        // КЛИК НА "СОРТИРОВАТЬ ПО" — показать/скрыть выпадающий список
+        sortByPill.onclick = (e) => {
+            e.stopPropagation(); // чтобы не срабатывал родитель
+            sortDropdown.style.display = sortDropdown.style.display === 'flex' ? 'none' : 'flex';
+        };
+        
+        // Закрытие dropdown при клике вне
+        document.addEventListener('click', () => {
+            sortDropdown.style.display = 'none';
+        });
 
         function renderModalGallery() {
             const track = document.getElementById('gallery-track');
