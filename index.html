@@ -503,7 +503,8 @@
                 list.appendChild(card);
             });
             
-            if(currentSort !== 'new') {
+            // Подсветка кнопки "Сортировать"
+            if(currentSort && currentSort !== 'new') {
                 sortWrapper.classList.add('active');
             } else {
                 sortWrapper.classList.remove('active');
