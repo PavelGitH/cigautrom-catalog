@@ -539,6 +539,18 @@
             } else {
                 sizeShoesPill.style.display = 'none';
             }
+            // Восстанавливаем подсветку выбранных размеров
+            if (currentSize && ['all', 'tshirts', 'jackets'].includes(currentCategory)) {
+                sizeClothesPill.classList.add('active');
+            } else {
+                sizeClothesPill.classList.remove('active');
+            }
+            
+            if (currentShoeSize && ['all', 'shoes'].includes(currentCategory)) {
+                sizeShoesPill.classList.add('active');
+            } else {
+                sizeShoesPill.classList.remove('active');
+            }
         
             renderCatalog(); 
         }
