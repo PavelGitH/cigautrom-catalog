@@ -502,13 +502,6 @@
                 `;
                 list.appendChild(card);
             });
-            
-            // Подсветка кнопки "Сортировать"
-            if(currentSort && currentSort !== 'new') {
-                sortWrapper.classList.add('active');
-            } else {
-                sortWrapper.classList.remove('active');
-            }
         }
 
         window.updateCardDots = function(el) {
