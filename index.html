@@ -755,12 +755,26 @@
 
         window.applySizeFilter = (size) => {
             currentSize = size;
+            
+            // Подсветка кнопки "Размер одежды"
+            const clothesPill = secondaryFilters.children[0]; // первый pill — размер одежды
+            if (size) clothesPill.classList.add('active');
+            else clothesPill.classList.remove('active');
+        
             renderCatalog();
         }
+        
         window.applyShoeSizeFilter = (size) => {
             currentShoeSize = size;
+            
+            // Подсветка кнопки "Размер обуви"
+            const shoePill = secondaryFilters.children[1]; // второй pill — размер обуви
+            if (size) shoePill.classList.add('active');
+            else shoePill.classList.remove('active');
+        
             renderCatalog();
         }
+        
     </script>
 </body>
 </html>
