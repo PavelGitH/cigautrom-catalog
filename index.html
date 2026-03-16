@@ -213,15 +213,12 @@
             <div class="filters-row">
                 <div class="sort-wrapper">
                     <div class="sort-icon">⇅</div>
-                
-                    <select class="sort-select" onchange="changeFilterType(this.value)">
-                        <option value="sort">Сортировать по</option>
-                        <option value="clothes">Размер одежды</option>
-                        <option value="shoes">Размер обуви</option>
+                    <select class="sort-select" onchange="applySort(this.value)">
+                        <option value="new">Сначала новые</option>
+                        <option value="asc">Сначала дешевые</option>
+                        <option value="desc">Сначала дорогие</option>
                     </select>
                 </div>
-                <select id="second-filter" class="pill hidden" onchange="applySecondFilter(this.value)">
-                </select>
                 <button class="pill active" onclick="setCategory('all', this)">Все</button>
                 <button class="pill" onclick="setCategory('bags', this)">Сумки</button>
                 <button class="pill" onclick="setCategory('shoes', this)">Обувь</button>
@@ -309,8 +306,6 @@
         let products = [];
         let currentCategory = 'all';
         let currentSort = 'new';
-        let currentClothesSize = null;
-        let currentShoeSize = null;
         let currentProduct = null;
         let modalIndex = 0;
         let startX = 0;
@@ -325,88 +320,11 @@
             }
         });
 
-        function changeFilterType(type) {
-
-            const second = document.getElementById("second-filter");
-            second.innerHTML = "";
-            second.classList.remove("hidden");
-        
-            if(type === "sort"){
-        
-                second.innerHTML = `
-                <option value="new">Сначала новые</option>
-                <option value="asc">Сначала дешевые</option>
-                <option value="desc">Сначала дорогие</option>
-                `;
-        
-            }
-        
-            if(type === "clothes"){
-        
-                second.innerHTML = `
-                <option value="">Размер</option>
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-                `;
-        
-            }
-        
-            if(type === "shoes"){
-        
-                second.innerHTML = `
-                <option value="">Размер</option>
-                <option value="36">36</option>
-                <option value="37">37</option>
-                <option value="38">38</option>
-                <option value="39">39</option>
-                <option value="40">40</option>
-                <option value="41">41</option>
-                <option value="42">42</option>
-                <option value="43">43</option>
-                <option value="44">44</option>
-                <option value="45">45</option>
-                <option value="46">46</option>
-                `;
-        
-            }
-        
-        }
-
-        function applySecondFilter(val){
-
-            const type = document.querySelector(".sort-select").value;
-        
-            if(type === "sort"){
-                currentSort = val;
-            }
-        
-            if(type === "clothes"){
-                currentClothesSize = val;
-            }
-        
-            if(type === "shoes"){
-                currentShoeSize = val;
-            }
-        
-            renderCatalog();
-        }
-        
         function renderCatalog() {
             const list = document.getElementById('catalog');
             list.innerHTML = '';
             
             let filtered = [...products];
-            
-            if(currentClothesSize){
-                filtered = filtered.filter(p => p.size === currentClothesSize);
-            }
-            
-            if(currentShoeSize){
-                filtered = filtered.filter(p => p.size === currentShoeSize);
-            }
 
             if (currentCategory === 'all') {
                 // показываем всё, КРОМЕ под заказ
