@@ -488,14 +488,34 @@
 
 
         window.setCategory = function(c, b) { 
-            document.querySelectorAll('.pill').forEach(el=>el.classList.remove('active')); 
+            // Снимаем активность со всех кнопок
+            document.querySelectorAll('.pill').forEach(el => el.classList.remove('active')); 
             b.classList.add('active'); 
             currentCategory = c; 
             
+            // Показываем основной экран
             document.querySelectorAll('.scroll-container').forEach(el => el.classList.add('hidden'));
             document.getElementById('screen-home').classList.remove('hidden');
             
             document.getElementById('catalog').classList.remove('hidden');
+        
+            // --- Логика отображения фильтров ---
+            const sizeClothesPill = secondaryFilters.children[0]; // размер одежды
+            const sizeShoesPill = secondaryFilters.children[1];   // размер обуви
+        
+            // Показываем только нужные фильтры
+            if(['all', 'tshirts', 'jackets'].includes(currentCategory)) {
+                sizeClothesPill.style.display = 'flex';
+            } else {
+                sizeClothesPill.style.display = 'none';
+            }
+        
+            if(['all', 'shoes'].includes(currentCategory)) {
+                sizeShoesPill.style.display = 'flex';
+            } else {
+                sizeShoesPill.style.display = 'none';
+            }
+        
             renderCatalog(); 
         }
 
