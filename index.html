@@ -333,6 +333,7 @@
                 </div>
                 <div class="separator"></div>
                 <div class="m-desc" id="m-desc"></div>
+                <div id="m-id" style="font-size: 10px; color: #8e8e93; margin-top: 5px;"></div>
             </div>
         </div>
         
@@ -564,7 +565,7 @@
             document.getElementById('m-name').innerText = p.name;
             document.getElementById('m-price').innerHTML = `${p.price} ₽<span class="price-usdt">${p.price2} USDT</span>`;
             document.getElementById('m-desc').innerText = p.description || '';
-            document.getElementById('m-id').innerText = `${p.id}`;
+            document.getElementById('m-id').innerText = `ID: ${p.id}`;
             const firstImg = p.images ? p.images.split(',')[0].trim() : '';
             const text = `Привет! Хочу купить ${p.name} (${firstImg})`;
             document.getElementById('m-buy-btn').href = `https://t.me/${myNick}?text=${encodeURIComponent(text)}`;
